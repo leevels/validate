@@ -18,37 +18,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Validate\Helper;
+namespace Leevel\Validate\Proxy;
 
-use InvalidArgumentException;
+use Leevel\Validate\IValidator;
 
 /**
- * 长度验证
+ * 代理 validate 接口.
  *
- * @param mixed $value
- * @param array $parameter
+ * @author Xiangmin Liu <635750556@qq.com>
  *
- * @throws \InvalidArgumentException
+ * @since 2019.05.26
  *
- * @return bool
+ * @version 1.0
+ *
+ * @see \Leevel\Validate\IValidate 请保持接口设计的一致
  */
-function validate_strlen($value, array $parameter): bool
+interface IValidate
 {
-    if (!is_scalar($value)) {
-        return false;
-    }
+    /**
+     * 创建一个验证器.
+     *
+     * @param array $data
+     * @param array $rules
+     * @param array $names
+     * @param array $messages
+     *
+     * @return \Leevel\Validate\IValidator
+     */
+    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator;
 
-    $value = (string) ($value);
-
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
-
-        throw new InvalidArgumentException($e);
-    }
-
-    return strlen($value) === (int) $parameter[0];
-}
-
-class validate_strlen
-{
+    /**
+     * 初始化默认验证消息.
+     */
+    public static function initMessages(): void;
 }
