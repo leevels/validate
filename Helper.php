@@ -18,25 +18,40 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Validate\Helper;
+namespace Leevel\Validate;
+
+use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
- * 验证是否为有效的 url 或者 IP 地址
+ * 助手类.
  *
- * @param mixed $value
+ * @author Xiangmin Liu <635750556@qq.com>
  *
- * @return bool
- * @codeCoverageIgnore
+ * @since 2019.08.21
+ *
+ * @version 1.0
  */
-function validate_active_url($value): bool
+class Helper
 {
-    if (!is_string($value)) {
-        return false;
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
+        if (!function_exists($fn)) {
+            class_exists($fn);
+        }
+
+        return $fn(...$args);
     }
-
-    return checkdnsrr($value);
 }
 
-class validate_active_url
-{
-}
+// import fn.
+class_exists(un_camelize::class);

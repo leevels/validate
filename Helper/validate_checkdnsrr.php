@@ -18,37 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Validate\Proxy;
-
-use Leevel\Validate\IValidator;
+namespace Leevel\Validate\Helper;
 
 /**
- * 代理 validate 接口.
+ * 验证是否为有效的域名.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param mixed $value
  *
- * @since 2019.05.26
- *
- * @version 1.0
- *
- * @see \Leevel\Validate\IValidate 请保持接口设计的一致
+ * @return bool
  */
-interface IValidate
+function validate_checkdnsrr($value): bool
 {
-    /**
-     * 创建一个验证器.
-     *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $messages
-     *
-     * @return \Leevel\Validate\IValidator
-     */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator;
+    if (!is_string($value)) {
+        return false;
+    }
 
-    /**
-     * 初始化默认验证消息.
-     */
-    public static function initMessages(): void;
+    return checkdnsrr($value);
+}
+
+class validate_checkdnsrr
+{
 }
